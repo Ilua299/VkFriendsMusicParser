@@ -26,6 +26,7 @@ class friendsVkMusicParser():
 
     def openChrome(self):
         chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("user-agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Safari/537.36'")
         chrome_options.add_experimental_option("useAutomationExtension", False)
         chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
         driver = webdriver.Chrome(service=Service("driver/chromedriver.exe"),options=chrome_options)
@@ -39,7 +40,7 @@ class friendsVkMusicParser():
         driver.find_element(By.ID, "index_login_button").click()
         WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.ID, "l_aud")))
         self.save_cookie(driver,"cookies/cookie.pkl")
-        driver.close()
+        driver.quit()
 
     def scrollToEnd(self,driver):
         currentHeight = 0
@@ -73,7 +74,7 @@ class friendsVkMusicParser():
         myMusicDicr["music"] = myMusicList
         with open('files/myMusic.json', 'w', encoding="UTF-16") as file:
             json.dump(myMusicDicr, file, indent=4, ensure_ascii=False)
-        driver.close()
+        driver.quit()
 
     def getFriendsMusic(self):
         driver = self.openChrome()
@@ -112,7 +113,7 @@ class friendsVkMusicParser():
 
         with open('files/friendsMusic.json', 'w', encoding="UTF-16") as file:
             json.dump(friends_list, file, indent=4, ensure_ascii=False)
-        driver.close()
+        driver.quit()
 
     def similarMusic(self):
         with open('files/myMusic.json', 'r', encoding="UTF-16") as json_file:
